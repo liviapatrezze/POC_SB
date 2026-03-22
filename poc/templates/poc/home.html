@@ -1,0 +1,32 @@
+{% extends "poc/base.html" %}
+
+{% block title %}POCSB — Início{% endblock %}
+
+{% block content %}
+<section class="sprint-grid">
+  {% for sprint in sprints %}
+    <button class="sprint-cell{% if forloop.counter0 == selected_index %} sprint-cell--active{% endif %}" type="button">
+      {{ sprint.label }}
+    </button>
+  {% endfor %}
+</section>
+
+<section class="entregas-section">
+  <div class="entregas-header">
+    <h2 class="entregas-title">Entregas</h2>
+    <span class="entregas-range">{{ selected_sprint.start|date:"d/m" }} a {{ selected_sprint.end|date:"d/m" }}</span>
+  </div>
+
+  {% for entrega in entregas %}
+  <article class="entrega-card">
+    <div class="entrega-meta">
+      <span class="entrega-squad">{{ entrega.squad }}</span>
+      <span class="entrega-date">{{ entrega.date }}</span>
+    </div>
+    <h3 class="entrega-title">{{ entrega.title }}</h3>
+    <p class="entrega-desc">{{ entrega.description }}</p>
+    <div class="entrega-image-placeholder"></div>
+  </article>
+  {% endfor %}
+</section>
+{% endblock %}
