@@ -12,7 +12,7 @@ POC de aplicação web com Django — homepage com grid de sprints e entregas, p
 ### macOS / Linux
 
 ```bash
-git clone https://github.com/SEU_USUARIO/POC_SB.git
+git clone https://github.com/liviapatrezze/POC_SB.git
 cd POC_SB
 
 python3 -m venv .venv
