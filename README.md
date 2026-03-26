@@ -25,7 +25,7 @@ python manage.py runserver
 ### Windows (PowerShell)
 
 ```powershell
-git clone https://github.com/SEU_USUARIO/POC_SB.git
+git clone https://github.com/liviapatrezze/POC_SB.git
 cd POC_SB
 
 python -m venv .venv
@@ -40,7 +40,7 @@ python manage.py runserver
 ### Windows (CMD)
 
 ```cmd
-git clone https://github.com/SEU_USUARIO/POC_SB.git
+git clone https://github.com/liviapatrezze/POC_SB.git
 cd POC_SB
 
 python -m venv .venv
