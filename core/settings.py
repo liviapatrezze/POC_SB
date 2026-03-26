@@ -75,8 +75,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mysql.connector.django',   # Motor do banco
+        'NAME': 'sportbridge',                  # Nome da base de dados criada no MySQL
+        'USER': 'root',                         # Geralmente 'root' em ambiente local
+        'PASSWORD': '',                         # Senha do seu usuário MySQL
+        'HOST': 'localhost',                    # Ou o IP do servidor (ex: '127.0.0.1')
+        'PORT': '3306',                         # Porta padrão do MySQL
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
