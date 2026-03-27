@@ -97,7 +97,7 @@ OBS: Tutoriais podem ajudar no uso do Workbench para manipulação do banco de d
     git pull
 ```
 
-a) Certifique-se de que o arquivo *requirements.txt* contenha a linha 'mysql-connector-python>=8.0.30'.
+a) Certifique-se de que o arquivo *requirements.txt* contenha a linha 'mysql-connector-python==9.6.0'.
 
 b) Verifique se as credenciais de acesso ao Mysql estão corretas em *POC_SB/core/settings.py*.
 
@@ -137,6 +137,6 @@ Pelo cmd, acesse a raíz do projeto e execute:
     db_info = conexao.get_server_info()
     Conectado ao servidor MySQL versão 9.1.0
     Você está conectado ao banco: ('sportbridge',)
-    (1, 'Alunos Univesp', 'Composto por alunos da disciplina PI.', 'Responsáveis pelo desenvolvimento do app de controle de entregue de task em cada sprint.', 'Whatsapp', datetime.datetime(2026, 3, 26, 17, 25, 22), 1)
+    (1, 'Alunos Univesp', 'Composto por alunos da disciplina PI.', 'Responsáveis pelo desenvolvimento do app de controle de entrega de task em cada sprint.', 'Whatsapp', datetime.datetime(2026, 3, 26, 17, 25, 22), 1)
     Conexão encerrada.
 ```
