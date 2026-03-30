@@ -5,9 +5,11 @@
 {% block content %}
 <section class="sprint-grid">
   {% for sprint in sprints %}
-    <button class="sprint-cell{% if forloop.counter0 == selected_index %} sprint-cell--active{% endif %}" type="button">
+    <a href="?sprint_id={{ sprint.id }}"
+       class="sprint-cell{% if forloop.counter0 == selected_index %} sprint-cell--active{% endif %}"
+       style="text-decoration: none; display: inline-block;">
       {{ sprint.label }}
-    </button>
+    </a>
   {% endfor %}
 </section>
 
