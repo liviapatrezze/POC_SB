@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 30/03/2026 às 11:10
+-- Tempo de geração: 30/03/2026 às 11:28
 -- Versão do servidor: 9.1.0
 -- Versão do PHP: 8.3.14
 
@@ -304,14 +304,14 @@ CREATE TABLE IF NOT EXISTS `task` (
   PRIMARY KEY (`id`),
   KEY `fk_task_squad_idx` (`squad_id`),
   KEY `fk_task_sprint1_idx` (`sprint_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `task`
 --
 
 INSERT INTO `task` (`id`, `title`, `description`, `priority`, `created_at`, `deadline`, `completed_at`, `squad_id`, `sprint_id`) VALUES
-(5, '1', '1', 'medium', '2026-01-08 11:09:06', '2026-01-07 11:09:06', '2026-01-07 11:09:06', 1, 1);
+(1, 'Correção do botão de inserir no sistema X', 'O botão apresentava problemas quando...', 'medium', '2026-01-07 11:25:26', '2026-01-14 11:25:26', '2026-01-09 11:25:26', 1, 1);
 
 -- --------------------------------------------------------
 

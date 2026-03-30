@@ -16,14 +16,14 @@
 <section class="entregas-section">
   <div class="entregas-header">
     <h2 class="entregas-title">Entregas</h2>
-    <span class="entregas-range">{{ selected_sprint.start|date:"d/m" }} a {{ selected_sprint.end|date:"d/m" }}</span>
+    <span class="entregas-range">{{ selected_sprint.start_date|date:"d/m" }} a {{ selected_sprint.end_date|date:"d/m" }}</span>
   </div>
 
   {% for entrega in entregas %}
   <article class="entrega-card">
     <div class="entrega-meta">
-      <span class="entrega-squad">{{ entrega.squad }}</span>
-      <span class="entrega-date">{{ entrega.date }}</span>
+      <span class="entrega-squad">{{ entrega.squad.name }}</span>
+      <span class="entrega-date">{{ entrega.completed_at }}</span>
     </div>
     <h3 class="entrega-title">{{ entrega.title }}</h3>
     <p class="entrega-desc">{{ entrega.description }}</p>
