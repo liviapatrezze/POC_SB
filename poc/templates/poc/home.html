@@ -6,8 +6,7 @@
 <section class="sprint-grid">
   {% for sprint in sprints %}
     <a href="?sprint_id={{ sprint.id }}"
-       class="sprint-cell{% if forloop.counter0 == selected_index %} sprint-cell--active{% endif %}"
-       style="text-decoration: none; display: inline-block;">
+       class="sprint-cell{% if forloop.counter0 == selected_index %} sprint-cell--active{% endif %}">
       {{ sprint.label }}
     </a>
   {% endfor %}
@@ -16,19 +15,30 @@
 <section class="entregas-section">
   <div class="entregas-header">
     <h2 class="entregas-title">Entregas</h2>
-    <span class="entregas-range">{{ selected_sprint.start_date|date:"d/m" }} a {{ selected_sprint.end_date|date:"d/m" }}</span>
+    {% if selected_sprint %}
+      <span class="entregas-range">{{ selected_sprint.start_date|date:"d/m" }} a {{ selected_sprint.end_date|date:"d/m" }}</span>
+    {% endif %}
   </div>
 
   {% for entrega in entregas %}
   <article class="entrega-card">
     <div class="entrega-meta">
       <span class="entrega-squad">{{ entrega.squad.name }}</span>
-      <span class="entrega-date">{{ entrega.completed_at }}</span>
+      <span class="entrega-date">{{ entrega.completed_at|date:"d/m/Y"|default:"Pendente" }}</span>
     </div>
     <h3 class="entrega-title">{{ entrega.title }}</h3>
     <p class="entrega-desc">{{ entrega.description }}</p>
-    <div class="entrega-image-placeholder"></div>
+    {% for img in entrega.taskimage_set.all %}
+      <img src="{{ img.url }}" alt="{{ img.caption }}" class="entrega-image">
+    {% empty %}
+      <div class="entrega-image-placeholder"></div>
+    {% endfor %}
   </article>
+  {% empty %}
+    <div class="empty-state">
+      <p class="empty-state-title">Nenhuma entrega nesta sprint</p>
+      <p class="empty-state-desc">As tasks aparecerão aqui assim que forem cadastradas para este período.</p>
+    </div>
   {% endfor %}
 </section>
 {% endblock %}

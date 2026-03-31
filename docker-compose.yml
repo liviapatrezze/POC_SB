@@ -1,0 +1,22 @@
+services:
+  db:
+    image: mysql:9.1
+    container_name: sportbridge-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: sportbridge
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db_project/sportbridge.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - sportbridge-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  sportbridge-data:
