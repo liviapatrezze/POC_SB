@@ -3,10 +3,79 @@
 {% block title %}POCSB — Cadastro{% endblock %}
 
 {% block content %}
-<article class="content-card">
-  <h1>Cadastro</h1>
-  <p class="lead">Crie sua conta na POC: preencha seus dados quando o formulário estiver disponível. Por ora, esta página ilustra o fluxo de cadastro com o mesmo layout das demais telas.</p>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.</p>
-  <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra.</p>
-</article>
+<section class="cadastro-page">
+  <div class="cadastro-card">
+    <header class="cadastro-card__head">
+      <h1 class="cadastro-wire-heading">Cadastrar nova entrega</h1>
+    </header>
+
+  {% if not pode_cadastrar %}
+  <p class="cadastro-warning">Cadastre pelo menos uma sprint no banco para habilitar o formulário.</p>
+  {% else %}
+  <form class="cadastro-wire-form" method="post" action="{% url 'poc:cadastro' %}" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {{ form.sprint }}
+
+    {% if form.non_field_errors %}
+    <ul class="cadastro-errors">
+      {% for err in form.non_field_errors %}<li>{{ err }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="cadastro-wire-field{% if form.title.errors %} cadastro-wire-field--invalid{% endif %}">
+      <label class="cadastro-wire-label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+      {{ form.title }}
+      {% for err in form.title.errors %}<p class="cadastro-error">{{ err }}</p>{% endfor %}
+    </div>
+
+    <div class="cadastro-wire-field{% if form.description.errors %} cadastro-wire-field--invalid{% endif %}">
+      <label class="cadastro-wire-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+      {{ form.description }}
+      {% for err in form.description.errors %}<p class="cadastro-error">{{ err }}</p>{% endfor %}
+    </div>
+
+    <div class="cadastro-wire-row">
+      <div class="cadastro-wire-field cadastro-wire-field--grow{% if form.squad_nome.errors %} cadastro-wire-field--invalid{% endif %}">
+        <label class="cadastro-wire-label" for="{{ form.squad_nome.id_for_label }}">{{ form.squad_nome.label }}</label>
+        {{ form.squad_nome }}
+        {% for err in form.squad_nome.errors %}<p class="cadastro-error">{{ err }}</p>{% endfor %}
+      </div>
+      <div class="cadastro-wire-field cadastro-wire-field--narrow{% if form.entrega_data.errors %} cadastro-wire-field--invalid{% endif %}">
+        <label class="cadastro-wire-label" for="{{ form.entrega_data.id_for_label }}">{{ form.entrega_data.label }}</label>
+        {{ form.entrega_data }}
+        {% for err in form.entrega_data.errors %}<p class="cadastro-error">{{ err }}</p>{% endfor %}
+      </div>
+    </div>
+
+    <div class="cadastro-wire-field cadastro-wire-upload-field{% if form.image.errors %} cadastro-wire-field--invalid{% endif %}">
+      <span class="cadastro-wire-label" id="cadastro-upload-label">Enviar imagem</span>
+      <div class="cadastro-wire-upload-inner" role="group" aria-labelledby="cadastro-upload-label">
+        <input type="text" class="cadastro-wire-filename" id="cadastroFileDisp" value="" readonly tabindex="-1" aria-hidden="true" placeholder="Nenhum arquivo selecionado">
+        <label class="cadastro-wire-browse" for="{{ form.image.id_for_label }}">Procurar</label>
+        {{ form.image }}
+        {% for err in form.image.errors %}<p class="cadastro-error cadastro-error--block">{{ err }}</p>{% endfor %}
+      </div>
+    </div>
+
+    <div class="cadastro-wire-actions">
+      <button type="submit" class="cadastro-wire-save">SALVAR</button>
+    </div>
+  </form>
+  {% endif %}
+  </div>
+</section>
+
+{% if pode_cadastrar %}
+<script>
+(function () {
+  var f = document.getElementById("{{ form.image.id_for_label }}");
+  var d = document.getElementById("cadastroFileDisp");
+  if (f && d) {
+    f.addEventListener("change", function () {
+      d.value = f.files && f.files.length ? f.files[0].name : "";
+    });
+  }
+})();
+</script>
+{% endif %}
 {% endblock %}

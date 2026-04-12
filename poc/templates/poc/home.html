@@ -16,7 +16,7 @@
   <div class="entregas-header">
     <h2 class="entregas-title">Entregas</h2>
     {% if selected_sprint %}
-      <span class="entregas-range">{{ selected_sprint.start_date|date:"d/m" }} a {{ selected_sprint.end_date|date:"d/m" }}</span>
+      <span class="entregas-range">{{ selected_sprint.start_date|date:"d/m/Y" }} a {{ selected_sprint.end_date|date:"d/m/Y" }}</span>
     {% endif %}
   </div>
 
@@ -36,8 +36,14 @@
   </article>
   {% empty %}
     <div class="empty-state">
-      <p class="empty-state-title">Nenhuma entrega nesta sprint</p>
-      <p class="empty-state-desc">As tasks aparecerão aqui assim que forem cadastradas para este período.</p>
+      <p class="empty-state-title">Nenhuma entrega neste período</p>
+      <p class="empty-state-desc">
+        {% if selected_sprint %}
+        Só entram entregas cuja <strong>data do formulário</strong> (campo Data) cai neste intervalo; não usa a data de criação. Sem data no cadastro, o registro não aparece em nenhum período.
+        {% else %}
+        Cadastre sprints no banco e selecione um período nos botões acima.
+        {% endif %}
+      </p>
     </div>
   {% endfor %}
 </section>
