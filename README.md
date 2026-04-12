@@ -1,12 +1,18 @@
 # POCSB
 
-POC de aplicação web com Django — homepage com grid de sprints e entregas, página de cadastro, layout inspirado no SportBridge.
+POC em Django de uma aplicação web inspirada no SportBridge: **relatório de entregas** por período (sprint) e **cadastro de novas entregas** com upload opcional de imagem. O front usa layout próprio (header, navegação, cards) alinhado à identidade visual do projeto.
+
+## Funcionalidades
+
+- **Relatório (`/`):** botões por sprint (intervalo de datas vindo do banco). Ao selecionar um período, a lista mostra apenas entregas cuja **data do campo Data do cadastro** (`completed_at`) cai entre o início e o fim da sprint — não usa a data de criação do registro nem apenas o vínculo `sprint_id` para filtrar a lista.
+- **Cadastro (`/cadastro/`):** título, descrição, nome da squad (texto; cria um novo registro em `squad`), data opcional, imagem opcional. A sprint do cadastro fica em campo oculto (pré-preenchida pela sprint atual ou por `?sprint_id=` na URL).
+- **Mídia:** uploads servidos em desenvolvimento via `MEDIA_URL` (pasta `media/` no projeto).
 
 ## Pré-requisitos
 
 - Python 3.12 ou superior
 - Git
-- Docker Desktop
+- Docker Desktop (para MySQL local via `docker compose`)
 
 ## Instalação do Docker
 
@@ -50,9 +56,9 @@ git clone https://github.com/liviapatrezze/POC_SB.git
 cd POC_SB
 ```
 
-### 2. Suba o banco de dados MySQL via Docker
+### 2. Suba o MySQL com Docker
 
-O projeto inclui um `docker-compose.yml` que cria um container MySQL já com a base `sportbridge` populada automaticamente.
+O `docker-compose.yml` sobe o MySQL, cria o banco `sportbridge` e executa `db_project/sportbridge.sql` na primeira inicialização do volume. Esse arquivo contém **apenas o schema** (tabelas e chaves), **sem dados de exemplo**.
 
 **macOS / Linux:**
 
@@ -66,15 +72,24 @@ docker compose up -d
 docker compose up -d
 ```
 
-Aguarde alguns segundos para o MySQL inicializar. Para verificar se está pronto:
+Confira o container:
 
 ```bash
 docker ps
 ```
 
-O container `sportbridge-mysql` deve aparecer com status **Up** e **(healthy)**.
+O serviço `sportbridge-mysql` deve aparecer como **Up** e **(healthy)**.
 
-### 3. Configure o ambiente Python e rode o servidor
+**Banco vazio:** é preciso existir ao menos uma **sprint** cadastrada para o relatório exibir botões e para o formulário de cadastro ficar habilitado. Inclua sprints (e demais dados) via SQL, admin Django ou ferramenta cliente do MySQL.
+
+**Recriar o banco do zero** (apaga dados do volume):
+
+```bash
+docker compose down -v
+docker compose up -d
+```
+
+### 3. Ambiente Python e servidor Django
 
 **macOS / Linux:**
 
@@ -94,7 +109,7 @@ pip install -r requirements.txt
 python manage.py runserver
 ```
 
-> Se o PowerShell bloquear a ativação do venv, execute `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` e tente novamente.
+> Se o PowerShell bloquear o venv: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
 
 **Windows (CMD):**
 
@@ -105,24 +120,29 @@ pip install -r requirements.txt
 python manage.py runserver
 ```
 
+Validação rápida do projeto (com MySQL acessível):
+
+```bash
+python manage.py check
+```
+
 ### 4. Acesse no navegador
 
-| Página   | URL                             |
-|----------|---------------------------------|
-| Home     | http://127.0.0.1:8000/          |
-| Cadastro | http://127.0.0.1:8000/cadastro/ |
+| Página    | URL                             |
+|-----------|---------------------------------|
+| Relatório | http://127.0.0.1:8000/          |
+| Cadastro  | http://127.0.0.1:8000/cadastro/ |
 
 ## Parar e reiniciar
 
-Para parar o servidor Django, pressione `Ctrl+C` no terminal.
-
-Para parar o container MySQL (os dados persistem no volume Docker):
+- Servidor Django: `Ctrl+C` no terminal.
+- MySQL mantendo dados:
 
 ```bash
 docker compose down
 ```
 
-Para subir novamente:
+- Subir de novo:
 
 ```bash
 docker compose up -d
@@ -132,24 +152,24 @@ docker compose up -d
 
 ```
 POC_SB/
-├── core/               # Configurações Django (settings, urls, wsgi)
-├── poc/                # App principal
-│   ├── static/poc/     # CSS e logo
-│   ├── templates/poc/  # Templates (base, home, cadastro)
-│   ├── models.py       # Models (Sprint, Squad, Task, TaskImage)
-│   ├── views.py        # Views com queries ao banco
-│   └── urls.py         # Rotas do app
-├── db_project/         # SQL dump e modelo do banco
-├── docker-compose.yml  # Container MySQL
+├── core/                 # Projeto Django (settings, urls, wsgi)
+├── poc/                  # App principal
+│   ├── static/poc/       # CSS e assets (ex.: logo)
+│   ├── templates/poc/    # base, home (relatório), cadastro
+│   ├── models.py         # Sprint, Squad, SquadMember, Task, TaskImage (managed=False)
+│   ├── forms.py          # EntregaForm
+│   ├── views.py          # index, cadastro
+│   └── urls.py
+├── db_project/
+│   └── sportbridge.sql   # Schema inicial para o container MySQL
+├── docker-compose.yml
 ├── manage.py
-└── requirements.txt
+└── requirements.txt      # Django 6, mysql-connector-python, etc.
 ```
 
-## Integração com o banco de dados (MySQL)
+## Banco de dados (MySQL)
 
-O `docker-compose.yml` cuida de tudo automaticamente: cria a base `sportbridge`, aplica o schema e insere os dados de seed definidos em `db_project/sportbridge.sql`.
-
-As credenciais padrão configuradas em `core/settings.py` são:
+Configuração padrão em `core/settings.py`:
 
 | Parâmetro | Valor       |
 |-----------|-------------|
@@ -159,8 +179,10 @@ As credenciais padrão configuradas em `core/settings.py` são:
 | PASSWORD  | (vazio)     |
 | DATABASE  | sportbridge |
 
-Para testar a conexão manualmente:
+Os models da app `poc` usam `managed = False` e refletem tabelas já existentes no MySQL; migrações Django não criam essas tabelas.
 
-```bash
-python teste_db.py
-```
+## Stack principal
+
+- Django 6.x
+- MySQL 9 (imagem oficial via Docker)
+- Driver: `mysql-connector-python`

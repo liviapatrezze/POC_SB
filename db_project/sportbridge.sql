@@ -207,37 +207,7 @@ CREATE TABLE IF NOT EXISTS `sprint` (
   `end_date` datetime NOT NULL,
   `status` varchar(20) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Options:\n- planned;\n- active;\n- closed;\n- canceled;',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Despejando dados para a tabela `sprint`
---
-
-INSERT INTO `sprint` (`id`, `name`, `goal`, `start_date`, `end_date`, `status`) VALUES
-(1, 'Sprint 1', '', '2026-01-01 00:00:00', '2026-01-15 00:00:00', 'planned'),
-(2, 'Sprint 2', '', '2026-01-16 00:00:00', '2026-01-30 00:00:00', 'planned'),
-(3, 'Sprint 3', '', '2026-01-31 00:00:00', '2026-02-14 00:00:00', 'planned'),
-(4, 'Sprint 4', '', '2026-02-15 00:00:00', '2026-03-01 00:00:00', 'planned'),
-(5, 'Sprint 5', '', '2026-03-02 00:00:00', '2026-03-16 00:00:00', 'planned'),
-(6, 'Sprint 6', '', '2026-03-17 00:00:00', '2026-03-31 00:00:00', 'planned'),
-(7, 'Sprint 7', '', '2026-04-01 00:00:00', '2026-04-15 00:00:00', 'planned'),
-(8, 'Sprint 8', '', '2026-04-16 00:00:00', '2026-04-30 00:00:00', 'planned'),
-(9, 'Sprint 9', '', '2026-05-01 00:00:00', '2026-05-15 00:00:00', 'planned'),
-(10, 'Sprint 10', '', '2026-05-16 00:00:00', '2026-05-30 00:00:00', 'planned'),
-(11, 'Sprint 11', '', '2026-05-31 00:00:00', '2026-06-14 00:00:00', 'planned'),
-(12, 'Sprint 12', '', '2026-06-15 00:00:00', '2026-06-29 00:00:00', 'planned'),
-(13, 'Sprint 13', '', '2026-06-30 00:00:00', '2026-07-14 00:00:00', 'planned'),
-(14, 'Sprint 14', '', '2026-07-15 00:00:00', '2026-07-29 00:00:00', 'planned'),
-(15, 'Sprint 15', '', '2026-07-30 00:00:00', '2026-08-13 00:00:00', 'planned'),
-(16, 'Sprint 16', '', '2026-08-14 00:00:00', '2026-08-28 00:00:00', 'planned'),
-(17, 'Sprint 17', '', '2026-08-29 00:00:00', '2026-09-12 00:00:00', 'planned'),
-(18, 'Sprint 18', '', '2026-09-13 00:00:00', '2026-09-27 00:00:00', 'planned'),
-(19, 'Sprint 19', '', '2026-09-28 00:00:00', '2026-10-12 00:00:00', 'planned'),
-(20, 'Sprint 20', '', '2026-10-13 00:00:00', '2026-10-27 00:00:00', 'planned'),
-(21, 'Sprint 21', '', '2026-10-28 00:00:00', '2026-11-11 00:00:00', 'planned'),
-(22, 'Sprint 22', '', '2026-11-12 00:00:00', '2026-11-26 00:00:00', 'planned'),
-(23, 'Sprint 23', '', '2026-11-27 00:00:00', '2026-12-11 00:00:00', 'planned'),
-(24, 'Sprint 24', '', '2026-12-12 00:00:00', '2026-12-26 00:00:00', 'planned');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -255,14 +225,7 @@ CREATE TABLE IF NOT EXISTS `squad` (
   `created_at` datetime NOT NULL,
   `is_active` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Despejando dados para a tabela `squad`
---
-
-INSERT INTO `squad` (`id`, `name`, `description`, `mission`, `contact_channel`, `created_at`, `is_active`) VALUES
-(1, 'Alunos Univesp', 'Composto por alunos da disciplina PI.', 'Responsáveis pelo desenvolvimento do app de controle de entregue de task em cada sprint.', 'Whatsapp', '2026-03-26 17:25:22', 1);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -304,14 +267,7 @@ CREATE TABLE IF NOT EXISTS `task` (
   PRIMARY KEY (`id`),
   KEY `fk_task_squad_idx` (`squad_id`),
   KEY `fk_task_sprint1_idx` (`sprint_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Despejando dados para a tabela `task`
---
-
-INSERT INTO `task` (`id`, `title`, `description`, `priority`, `created_at`, `deadline`, `completed_at`, `squad_id`, `sprint_id`) VALUES
-(1, 'Correção do botão de inserir no sistema X', 'O botão apresentava problemas quando...', 'medium', '2026-01-07 11:25:26', '2026-01-14 11:25:26', '2026-01-09 11:25:26', 1, 1);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
